@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kangkung Chat Overlay</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #chat-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100vh;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .chat-message {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 12px;
+      margin: 5px 0;
+      padding: 8px 14px;
+      color: white;
+      max-width: 90%;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .author.mod {
+      color: #00BFFF;
+      font-weight: bold;
+    }
+
+    .author.member {
+      color: #32CD32;
+      font-weight: bold;
+    }
+
+    .author.owner {
+      color: #FF4500;
+      font-weight: bold;
+    }
+
+    .author.normal {
+      color: #FFFFFF;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-container"></div>
+  <audio id="ping" src="sound.mp3" preload="auto"></audio>
+
+  <script>
+    const chatContainer = document.getElementById('chat-container');
+    const ping = document.getElementById('ping');
+
+    const fakeMessages = [
+      { author: 'KangkungMod', type: 'mod', message: 'Welcome to the stream, geng!' },
+      { author: 'SiViewer', type: 'normal', message: 'First time join live 😄' },
+      { author: 'SabahGamer', type: 'member', message: 'Kangkung power bah ni overlay!' },
+      { author: 'KangkungStudio', type: 'owner', message: 'Thank you semua yang support!' }
+    ];
+
+    let index = 0;
+    function addMessage() {
+      if (index >= fakeMessages.length) return;
+
+      const msg = fakeMessages[index];
+      const div = document.createElement('div');
+      div.classList.add('chat-message');
+      div.innerHTML = `
+        <span class="author ${msg.type}">${msg.author}</span>: ${msg.message}
+      `;
+      chatContainer.appendChild(div);
+      ping.currentTime = 0;
+      ping.play();
+      index++;
+    }
+
+    setInterval(addMessage, 3000);
+  </script>
+</body>
+</html>
